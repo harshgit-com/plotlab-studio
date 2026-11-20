@@ -54,6 +54,7 @@ body.authenticated .login-gate{display:none}
  <div class="nav-label">MANAGEMENT</div>
  <nav class="nav">
   <button data-page="analytics"><span class="ico">⌁</span>Analytics</button>
+  <button data-page="community"><span class="ico">☆</span>Reviews & Notifications</button>
   <button data-page="brand"><span class="ico">◇</span>Brand Kit</button>
   <button data-page="access"><span class="ico">♙</span>Access & Security</button>
  </nav>
@@ -132,6 +133,20 @@ body.authenticated .login-gate{display:none}
   <section class="page" id="calendar">
    <div class="heading"><div><div class="eyebrow">Publishing rhythm</div><h1>Content Calendar</h1><p>A simple view of your planned campaign dates and creative workflow.</p></div><button class="btn" data-goto="campaigns">Manage campaigns →</button></div>
    <div class="card"><div class="card-head"><h3>Upcoming planned activity</h3><span>Saved in this browser</span></div><div id="calendarList" class="empty">Your planned campaigns will appear here once you add dates.</div></div>
+  </section>
+  <section class="page" id="community">
+   <div class="heading"><div><div class="eyebrow">Audience & community</div><h1>Reviews & Notifications</h1><p>Moderate public movie reviews and publish announcements through the existing PlotLab systems.</p></div><button class="btn ghost" id="communityRefresh" type="button">↻ Refresh</button></div>
+   <div class="grid section-grid" style="margin-bottom:16px">
+    <div class="card"><div class="card-head"><h3>Community reviews</h3><span id="reviewCount">—</span></div><p class="muted" style="font-size:11px;margin:0 0 14px">Reviews submitted on the public PlotLab website. Deleting a review removes it from the public collection.</p><div id="studioReviewList" class="grid" style="gap:9px"><div class="empty">Waiting for secure connection…</div></div></div>
+    <div class="card"><div class="card-head"><h3>Publish notification</h3><span class="pill orange">Live audience</span></div><form id="studioNotificationForm" class="formgrid">
+     <div class="field full"><label for="studioNotificationTitle">Title *</label><input id="studioNotificationTitle" maxlength="90" required placeholder="e.g. New films are now streaming"></div>
+     <div class="field full"><label for="studioNotificationMessage">Message *</label><textarea id="studioNotificationMessage" maxlength="500" required placeholder="Write a clear announcement for PlotLab users…"></textarea></div>
+     <div class="field full"><label for="studioNotificationAudience">Audience</label><select id="studioNotificationAudience"><option value="all">All signed-in users</option><option value="viewer">Viewers only</option><option value="creator">Creators only</option></select></div>
+     <div class="field full"><button class="btn primary" id="studioPublishNotification" type="submit">Publish notification</button></div>
+    </form></div>
+   </div>
+   <div class="card"><div class="card-head"><h3>Recent notifications</h3><span id="notificationCount">—</span></div><div id="studioNotificationList" class="grid" style="gap:9px"><div class="empty">Waiting for secure connection…</div></div></div>
+   <p class="muted" id="communityStatus" style="font-size:11px;margin-top:12px" role="status">Connecting to PlotLab…</p>
   </section>
   <section class="page" id="analytics">
    <div class="heading"><div><div class="eyebrow">Measure what matters</div><h1>PlotLab Analytics</h1><p>Live audience and viewing insights from the existing PlotLab event stream.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="pill green">Firestore live</span><button class="btn" id="anRefresh" type="button">↻ Refresh</button><button class="btn primary" id="anExport" type="button">Export CSV</button></div></div>
@@ -274,4 +289,4 @@ onAuthStateChanged(auth,async user=>{
  }catch(error){showStatus("Could not verify this account. Please sign in again.");await signOut(auth);}
 });
 </script>
-<script type="module" src="./studio-movies.js"></script><script type="module" src="./studio-insights.js"></script></body></html>
+<script type="module" src="./studio-movies.js"></script><script type="module" src="./studio-insights.js"></script><script type="module" src="./studio-community.js"></script></body></html>
