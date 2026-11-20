@@ -54,7 +54,9 @@ body.authenticated .login-gate{display:none}
  <div class="nav-label">MANAGEMENT</div>
  <nav class="nav">
   <button data-page="analytics"><span class="ico">⌁</span>Analytics</button>
+  <button data-page="people"><span class="ico">♙</span>Users & Creators</button>
   <button data-page="community"><span class="ico">☆</span>Reviews & Notifications</button>
+  <button data-page="activity-log"><span class="ico">≡</span>Activity Log</button>
   <button data-page="brand"><span class="ico">◇</span>Brand Kit</button>
   <button data-page="access"><span class="ico">♙</span>Access & Security</button>
  </nav>
@@ -167,7 +169,34 @@ body.authenticated .login-gate{display:none}
    </div>
    <div class="card" style="margin-top:14px"><div class="card-head"><h3>Recent event log</h3><span class="muted">Latest 100 matching events</span></div><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:11px;min-width:650px"><thead><tr style="text-align:left;color:#aaa"><th style="padding:10px">Date / time</th><th>Event</th><th>Context</th><th>Device</th><th>Browser</th></tr></thead><tbody id="anRecentRows"><tr><td colspan="5" class="empty">Waiting for events…</td></tr></tbody></table></div><p class="muted" style="font-size:10px;margin-top:10px">*Completion rate is an event-based estimate using sessionId (or userId fallback). It is not a unique-person retention metric. Social reach and campaign conversions require separate platform integrations.</p></div>
   </section>
-  <section class="page" id="brand">
+  <section class="page" id="people">
+ <div class="heading"><div><div class="eyebrow">Audience & talent network</div><h1>Users & Creators</h1><p>Search the accounts and creator profiles registered on the live PlotLab platform.</p></div><button class="btn" id="peopleRefresh" type="button">↻ Refresh</button></div>
+ <div class="grid stats">
+  <div class="card"><div class="stat-top">Registered accounts</div><div class="stat-value" id="peopleUserCount">—</div><div class="stat-foot">User records in Firestore</div></div>
+  <div class="card"><div class="stat-top">Creator profiles</div><div class="stat-value" id="peopleCreatorCount">—</div><div class="stat-foot">Published creator profiles</div></div>
+  <div class="card"><div class="stat-top">Viewer accounts</div><div class="stat-value" id="peopleViewerCount">—</div><div class="stat-foot">Accounts marked as viewers</div></div>
+  <div class="card"><div class="stat-top">Creator accounts</div><div class="stat-value" id="peopleCreatorAccounts">—</div><div class="stat-foot">Accounts with creator access</div></div>
+ </div>
+ <div class="card" style="margin-bottom:15px"><div class="field"><label for="peopleSearch">Search by name, email, city or role</label><input id="peopleSearch" type="search" placeholder="Search PlotLab accounts…"></div><p class="muted" id="peopleStatus" style="font-size:11px;margin:10px 0 0">Waiting for secure owner session…</p></div>
+ <div class="grid section-grid">
+  <div class="card"><div class="card-head"><h3>Platform users</h3><span id="peopleUsersLabel">—</span></div><div id="peopleUsersList" class="grid" style="gap:8px"><div class="empty">Loading user records…</div></div></div>
+  <div class="card"><div class="card-head"><h3>Creator directory</h3><span id="peopleCreatorsLabel">—</span></div><div id="peopleCreatorsList" class="grid" style="gap:8px"><div class="empty">Loading creator profiles…</div></div></div>
+ </div>
+ <p class="muted" style="font-size:10px;margin-top:12px">This workspace currently provides secure owner-only visibility. Role changes, account suspension and deletion are intentionally disabled until server-enforced staff permissions and corresponding Firestore rules are deployed.</p>
+</section>
+<section class="page" id="activity-log">
+ <div class="heading"><div><div class="eyebrow">Accountability & operations</div><h1>Admin Activity Log</h1><p>Review administrative actions recorded by PlotLab's existing systems and Studio.</p></div><button class="btn" id="activityRefresh" type="button">↻ Refresh</button></div>
+ <div class="grid stats">
+  <div class="card"><div class="stat-top">Recorded actions</div><div class="stat-value" id="activityTotal">—</div><div class="stat-foot">Audit records in Firestore</div></div>
+  <div class="card"><div class="stat-top">Recent 24 hours</div><div class="stat-value" id="activityToday">—</div><div class="stat-foot">Based on server timestamps</div></div>
+  <div class="card"><div class="stat-top">Action types</div><div class="stat-value" id="activityTypes">—</div><div class="stat-foot">Distinct recorded actions</div></div>
+  <div class="card"><div class="stat-top">Latest activity</div><div class="stat-value" id="activityLatest" style="font-size:15px">—</div><div class="stat-foot">Most recent audit event</div></div>
+ </div>
+ <div class="card"><div class="field"><label for="activitySearch">Search audit log</label><input id="activitySearch" type="search" placeholder="Search action, actor or target…"></div><p id="activityStatus" class="muted" style="font-size:11px;margin:10px 0">Waiting for secure owner session…</p></div>
+ <div class="table-wrap" style="margin-top:14px"><table class="table" style="min-width:720px"><thead><tr><th>Date & time</th><th>Action</th><th>Target</th><th>Actor</th><th>Details</th></tr></thead><tbody id="activityRows"><tr><td colspan="5" class="empty">Loading audit records…</td></tr></tbody></table></div>
+ <p class="muted" style="font-size:10px;margin-top:12px">Audit records are read-only here. The existing Firestore rules prevent edits or deletion of adminActivity entries.</p>
+</section>
+<section class="page" id="brand">
    <div class="heading"><div><div class="eyebrow">Consistency at every touchpoint</div><h1>Brand Kit</h1><p>Keep PlotLab's visual identity consistent across every campaign.</p></div></div>
    <div class="grid section-grid"><div class="card"><div class="card-head"><h3>Core palette</h3><span>Current Studio direction</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><div style="width:85px"><div style="height:52px;border-radius:8px;background:#080808;border:1px solid #333"></div><small class="muted">Night · #0D0E10</small></div><div style="width:85px"><div style="height:52px;border-radius:8px;background:#111111"></div><small class="muted">Charcoal · #111111</small></div><div style="width:85px"><div style="height:52px;border-radius:8px;background:#ff5738"></div><small class="muted">Orange · #F28A27</small></div><div style="width:85px"><div style="height:52px;border-radius:8px;background:#f5f0e8"></div><small class="muted">White · #F5F5F6</small></div></div></div><div class="card"><div class="card-head"><h3>Brand guidelines</h3><span class="pill orange">To be completed</span></div><p class="muted" style="font-size:12px">Upload the approved original PlotLab logo, typography, safe-space rules, poster templates and social formats here during the next setup phase. We will preserve the existing original logo and avoid introducing a replacement identity.</p><button class="btn" data-action="brand">Add brand assets</button></div></div>
   </section>
@@ -181,23 +210,11 @@ body.authenticated .login-gate{display:none}
 </div>
 <div class="toast" id="toast"></div>
 <script>
-const pages=[...document.querySelectorAll('.page')], nav=[...document.querySelectorAll('[data-page]')], crumb=document.getElementById('crumb');
-function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));nav.forEach(n=>n.classList.toggle('active',n.dataset.page===id));const n=nav.find(x=>x.dataset.page===id);crumb.textContent=n?n.textContent.trim():id;document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');if(id==='calendar')renderCalendar();window.scrollTo({top:0,behavior:'smooth'});}
+const pages=[...document.querySelectorAll('.page')],nav=[...document.querySelectorAll('[data-page]')],crumb=document.getElementById('crumb');
+function go(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));nav.forEach(n=>n.classList.toggle('active',n.dataset.page===id));const n=nav.find(x=>x.dataset.page===id);crumb.textContent=n?n.textContent.trim():id;document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');window.scrollTo({top:0,behavior:'smooth'});}
 nav.forEach(n=>n.addEventListener('click',()=>go(n.dataset.page)));document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.goto)));
 document.getElementById('menu').onclick=()=>{document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show')};document.getElementById('overlay').onclick=()=>{document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show')};
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
-document.querySelectorAll('[data-action="integration"]').forEach(b=>b.onclick=()=>toast('Firebase integration is the next setup phase. No live data has been changed.'));document.querySelectorAll('[data-action="brand"]').forEach(b=>b.onclick=()=>toast('Brand asset library will be added in the next phase.'));
-let campaigns=JSON.parse(localStorage.getItem('plstudio_campaigns')||'[]'), briefs=JSON.parse(localStorage.getItem('plstudio_briefs')||'[]');
-function save(){localStorage.setItem('plstudio_campaigns',JSON.stringify(campaigns));localStorage.setItem('plstudio_briefs',JSON.stringify(briefs))}
-function renderCampaigns(){const rows=document.getElementById('campaignRows');document.getElementById('campaignCount').textContent=campaigns.length;document.getElementById('campaignLabel').textContent=campaigns.length+' campaigns';if(!campaigns.length){rows.innerHTML='<tr><td colspan="5" class="empty">No campaigns yet. Create your first campaign to get started.</td></tr>';return}rows.innerHTML=campaigns.map(c=>'<tr><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.type)+'</td><td>'+esc(c.date||'Not set')+'</td><td>'+esc(c.channel)+'</td><td><span class="pill orange">Draft</span></td></tr>').join('')}
-function renderCalendar(){const el=document.getElementById('calendarList');const list=campaigns.filter(c=>c.date).sort((a,b)=>a.date.localeCompare(b.date));el.innerHTML=list.length?list.map(c=>'<div class="activity-row" style="padding:12px 0;border-bottom:1px solid var(--line)"><div class="activity-icon">◷</div><div><b>'+esc(c.name)+'</b><p>'+esc(c.type)+' · '+esc(c.channel)+'</p></div><time>'+esc(c.date)+'</time></div>').join(''):'No dated campaigns yet. Add a campaign with a start date to see it here.'}
-function renderBriefs(){const el=document.getElementById('briefList');document.getElementById('briefCount').textContent=briefs.length+' briefs';el.className=briefs.length?'':'empty';el.innerHTML=briefs.length?briefs.map(b=>'<div style="padding:12px 0;border-bottom:1px solid var(--line)"><b>'+esc(b.type)+'</b><p class="muted" style="font-size:11px;margin:4px 0">'+esc(b.text)+'</p></div>').join(''):'No creative briefs saved yet.'}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-document.getElementById('newCampaign').onclick=()=>document.getElementById('campaignForm').style.display='block';document.getElementById('cancelCampaign').onclick=()=>document.getElementById('campaignForm').style.display='none';
-document.getElementById('saveCampaign').onclick=()=>{const name=document.getElementById('campName').value.trim();if(!name){toast('Enter a campaign name first.');return}campaigns.push({name,type:document.getElementById('campType').value,date:document.getElementById('campDate').value,channel:document.getElementById('campChannel').value,objective:document.getElementById('campObjective').value});save();renderCampaigns();document.getElementById('campaignForm').style.display='none';['campName','campDate','campObjective'].forEach(id=>document.getElementById(id).value='');toast('Campaign saved as a local draft.')};
-document.getElementById('saveBrief').onclick=()=>{const text=document.getElementById('creativeBrief').value.trim();if(!text){toast('Add a creative direction first.');return}briefs.unshift({type:document.getElementById('assetType').value,text});save();renderBriefs();document.getElementById('creativeBrief').value='';toast('Creative brief saved.')};
-document.getElementById('draftCopy').onclick=()=>{const topic=document.getElementById('copyTopic').value.trim();if(!topic){toast('Enter a post topic first.');return}const platform=document.getElementById('copyPlatform').value;const draft='🎬 Something exciting is coming to PlotLab.\n\n'+topic+'\n\nDiscover stories. Celebrate creators. Experience cinema.\n\n#PlotLab #Cinema #Creators';navigator.clipboard?.writeText(draft).then(()=>toast('Starter caption copied. Edit it before publishing.')).catch(()=>toast('Caption draft: '+draft));};
-renderCampaigns();renderBriefs();
 </script>
 
 <script type="module">
@@ -289,4 +306,4 @@ onAuthStateChanged(auth,async user=>{
  }catch(error){showStatus("Could not verify this account. Please sign in again.");await signOut(auth);}
 });
 </script>
-<script type="module" src="./studio-movies.js"></script><script type="module" src="./studio-insights.js"></script><script type="module" src="./studio-community.js"></script></body></html>
+<script type="module" src="./studio-movies.js"></script><script type="module" src="./studio-insights.js"></script><script type="module" src="./studio-community.js"></script><script type="module" src="./studio-people.js"></script><script type="module" src="./studio-workspace.js"></script></body></html>
