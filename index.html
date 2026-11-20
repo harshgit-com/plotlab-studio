@@ -13,7 +13,7 @@
 .login-gate{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#ff573814,transparent 45%),#080808}
 .login-card{width:min(460px,100%);padding:34px;border:1px solid #ffffff20;border-radius:14px;background:#111;box-shadow:0 24px 80px #0009}
 .login-brand{display:flex;align-items:center;min-height:70px;margin-bottom:24px}
-.login-brand img{width:174px;height:64px;object-fit:contain;visibility:hidden}
+.login-brand img{width:174px;height:64px;object-fit:contain;visibility:hidden}.login-brand-fallback{font-weight:900;letter-spacing:.14em;color:#f5f0e8}
 .login-card h1{font-size:27px;letter-spacing:-.04em;margin:8px 0}
 .login-card p{color:#999;font-size:13px;line-height:1.7}
 .login-card .btn{width:100%;margin-top:16px;min-height:46px}
@@ -143,9 +143,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebas
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 const logoEl=document.getElementById("studioLogo");
 const fallbackEl=document.querySelector(".brand-fallback");
-try{const cached=localStorage.getItem("plotlab-public-logo");if(cached){logoEl.src=cached;logoEl.style.visibility="visible";fallbackEl.style.display="none";}}
+try{const cached=localStorage.getItem("plotlab-public-logo");if(cached){logoEl.src=cached;logoEl.style.visibility="visible";loginLogoEl.src=cached;loginLogoEl.style.visibility="visible";fallbackEl.style.display="none";loginFallbackEl.style.display="none";}}
 catch(e){}
-try{const app=initializeApp({apiKey:"AIzaSyDpZnZP7WxtspEIbpODiyeO7k_YugO62WQ",authDomain:"plotlab-22f4b.firebaseapp.com",projectId:"plotlab-22f4b",storageBucket:"plotlab-22f4b.firebasestorage.app",messagingSenderId:"780600065112",appId:"1:780600065112:web:9a8722a1a6afe795a59e2d"},"plotlab-studio-brand");const db=getFirestore(app);const snap=await getDoc(doc(db,"siteSettings","public"));const logoUrl=snap.exists()?snap.data().logoUrl:"";if(logoUrl){logoEl.src=logoUrl;logoEl.style.visibility="visible";fallbackEl.style.display="none";try{localStorage.setItem("plotlab-public-logo",logoUrl)}catch(e){}}}
+try{const app=initializeApp({apiKey:"AIzaSyDpZnZP7WxtspEIbpODiyeO7k_YugO62WQ",authDomain:"plotlab-22f4b.firebaseapp.com",projectId:"plotlab-22f4b",storageBucket:"plotlab-22f4b.firebasestorage.app",messagingSenderId:"780600065112",appId:"1:780600065112:web:9a8722a1a6afe795a59e2d"},"plotlab-studio-brand");const db=getFirestore(app);const snap=await getDoc(doc(db,"siteSettings","public"));const logoUrl=snap.exists()?snap.data().logoUrl:"";if(logoUrl){[logoEl,loginLogoEl].forEach(img=>{img.src=logoUrl;img.style.visibility="visible"});fallbackEl.style.display="none";loginFallbackEl.style.display="none";try{localStorage.setItem("plotlab-public-logo",logoUrl)}catch(e){}}}
 catch(error){console.info("Using cached PlotLab branding until public logo settings are available.");}
 </script>
 
