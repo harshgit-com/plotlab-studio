@@ -216,7 +216,7 @@ async function loadStudioMovies(){
   const snap=await getDocs(collection(db,"movies"));
   studioMovies=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.updatedAt?.seconds||0)-(a.updatedAt?.seconds||0));
   renderStudioMovies();
-  movieStatus.textContent="Connected · "+studioMovies.length+" records loaded from PlotLab Firestore. This view cannot edit or publish.";
+  movieStatus.textContent="Connected · "+studioMovies.length+" records loaded from PlotLab Firestore. Changes sync to the public website.";
   document.getElementById("catalogueConnection").textContent="Live connection";
   document.getElementById("catalogueConnection").className="pill green";
  }catch(error){
@@ -249,7 +249,7 @@ onAuthStateChanged(auth,async user=>{
   document.getElementById("studioUserEmail").textContent=user.email||OWNER_EMAIL;
   document.body.classList.add("authenticated");
   showStatus("");
-  await loadStudioMovies();
+  // Movie catalogue is loaded by the Studio administration module.
  }catch(error){showStatus("Could not verify this account. Please sign in again.");await signOut(auth);}
 });
 </script>
