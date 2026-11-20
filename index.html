@@ -24,6 +24,22 @@ body.authenticated .login-gate{display:none}
 </style>
 </head>
 <body>
+
+<div class="login-gate" id="loginGate">
+ <div class="login-card">
+  <div class="login-brand">
+   <img id="loginLogo" alt="PlotLab — Create, Collaborate, Stream">
+   <span class="login-brand-fallback" id="loginFallback">PLOTLAB<br><small style="font-size:10px;letter-spacing:.16em;color:#999">STUDIO / COMMAND</small></span>
+  </div>
+  <div class="eyebrow">PRIVATE WORKSPACE</div>
+  <h1>Welcome to PlotLab Studio.</h1>
+  <p>Sign in with the authorised PlotLab owner Google account to access the private command centre.</p>
+  <button class="btn primary" id="studioGoogleLogin" type="button">Continue with Google</button>
+  <div class="login-status" id="loginStatus" role="status" aria-live="polite"></div>
+  <p class="login-note">Access is restricted to the verified PlotLab owner account.</p>
+ </div>
+</div>
+
 <div class="app">
 <aside class="sidebar" id="sidebar">
  <div class="brand"><a class="brand-home" href="#" aria-label="PlotLab Studio"><img class="brand-logo" id="studioLogo" alt="PlotLab — Create, Collaborate, Stream"><span class="brand-fallback">PLOTLAB<small>STUDIO / COMMAND</small></span></a></div>
@@ -143,9 +159,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebas
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 const logoEl=document.getElementById("studioLogo");
 const fallbackEl=document.querySelector(".brand-fallback");
-try{const cached=localStorage.getItem("plotlab-public-logo");if(cached){logoEl.src=cached;logoEl.style.visibility="visible";loginLogoEl.src=cached;loginLogoEl.style.visibility="visible";fallbackEl.style.display="none";loginFallbackEl.style.display="none";}}
+try{const cached=localStorage.getItem("plotlab-public-logo");if(cached){logoEl.src=cached;logoEl.style.visibility="visible";fallbackEl.style.display="none";}}
 catch(e){}
-try{const app=initializeApp({apiKey:"AIzaSyDpZnZP7WxtspEIbpODiyeO7k_YugO62WQ",authDomain:"plotlab-22f4b.firebaseapp.com",projectId:"plotlab-22f4b",storageBucket:"plotlab-22f4b.firebasestorage.app",messagingSenderId:"780600065112",appId:"1:780600065112:web:9a8722a1a6afe795a59e2d"},"plotlab-studio-brand");const db=getFirestore(app);const snap=await getDoc(doc(db,"siteSettings","public"));const logoUrl=snap.exists()?snap.data().logoUrl:"";if(logoUrl){[logoEl,loginLogoEl].forEach(img=>{img.src=logoUrl;img.style.visibility="visible"});fallbackEl.style.display="none";loginFallbackEl.style.display="none";try{localStorage.setItem("plotlab-public-logo",logoUrl)}catch(e){}}}
+try{const app=initializeApp({apiKey:"AIzaSyDpZnZP7WxtspEIbpODiyeO7k_YugO62WQ",authDomain:"plotlab-22f4b.firebaseapp.com",projectId:"plotlab-22f4b",storageBucket:"plotlab-22f4b.firebasestorage.app",messagingSenderId:"780600065112",appId:"1:780600065112:web:9a8722a1a6afe795a59e2d"},"plotlab-studio-brand");const db=getFirestore(app);const snap=await getDoc(doc(db,"siteSettings","public"));const logoUrl=snap.exists()?snap.data().logoUrl:"";if(logoUrl){[logoEl,document.getElementById("loginLogo")].forEach(img=>{if(img){img.src=logoUrl;img.style.visibility="visible"}});fallbackEl.style.display="none";const loginFallback=document.getElementById("loginFallback");if(loginFallback)loginFallback.style.display="none";try{localStorage.setItem("plotlab-public-logo",logoUrl)}catch(e){}}}
 catch(error){console.info("Using cached PlotLab branding until public logo settings are available.");}
 </script>
 
@@ -159,15 +175,17 @@ const loginBtn=document.getElementById("studioGoogleLogin");
 const loginLogo=document.getElementById("loginLogo");
 const sidebarLogo=document.getElementById("studioLogo");
 const fallback=document.querySelector(".brand-fallback");
+const loginFallback=document.getElementById("loginFallback");
 const app=initializeApp(firebaseConfig,"plotlab-studio-auth");
 const auth=getAuth(app);
 const provider=new GoogleAuthProvider();
 provider.setCustomParameters({prompt:"select_account"});
 function showStatus(message){statusEl.textContent=message;}
-function applyLogo(url){if(!url)return;[loginLogo,sidebarLogo].forEach(img=>{if(img){img.src=url;img.style.visibility="visible";}});if(fallback)fallback.style.display="none";}
+function applyLogo(url){if(!url)return;[loginLogo,sidebarLogo].forEach(img=>{if(img){img.src=url;img.style.visibility="visible";}});if(fallback)fallback.style.display="none";if(loginFallback)loginFallback.style.display="none";}
 try{const cached=localStorage.getItem("plotlab-public-logo");if(cached)applyLogo(cached);}catch(e){}
 loginBtn.addEventListener("click",async()=>{loginBtn.disabled=true;showStatus("Opening secure Google sign-in…");try{await signInWithPopup(auth,provider);}catch(error){showStatus(error.code==="auth/unauthorized-domain"?"This Studio domain is not yet authorised in Firebase Authentication. Add the deployed domain under Authentication → Settings → Authorised domains.":error.message||"Google sign-in could not be completed.");}finally{loginBtn.disabled=false;}});
 document.getElementById("studioLogout").addEventListener("click",async()=>{await signOut(auth);document.body.classList.remove("authenticated");showStatus("You have signed out.");});
+await setPersistence(auth,browserSessionPersistence);
 onAuthStateChanged(auth,async user=>{
  if(!user){document.body.classList.remove("authenticated");return;}
  try{
