@@ -19,7 +19,7 @@
 .login-card .btn{width:100%;margin-top:16px;min-height:46px}
 .login-note{font-size:10px!important;color:#777!important;margin-top:18px}
 .login-status{min-height:20px;color:#ff9a86;font-size:12px;margin-top:12px}
-body:not(.authenticated) .app{display:none}
+.catalogue-movie{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:13px;align-items:center;padding:10px;border:1px solid var(--line);background:#0d0e10;border-radius:9px;min-width:0}.catalogue-movie img{width:58px;height:76px;object-fit:cover;border-radius:5px;background:#202126}.catalogue-movie strong{display:block;font-size:13px;overflow-wrap:anywhere}.catalogue-movie small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.catalogue-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.catalogue-tags span{font-size:9px;color:#ffb3a4;background:#351c17;padding:3px 6px;border-radius:20px}@media(max-width:520px){.catalogue-movie{grid-template-columns:46px minmax(0,1fr)}.catalogue-movie img{width:46px;height:64px}.catalogue-movie>.pill{grid-column:2;justify-self:start}}body:not(.authenticated) .app{display:none}
 body.authenticated .login-gate{display:none}
 </style>
 </head>
@@ -90,16 +90,26 @@ body.authenticated .login-gate{display:none}
    </div></div>
   </section>
   <section class="page" id="administration">
-   <div class="heading"><div><div class="eyebrow">Platform operations</div><h1>Administration</h1><p>Manage the PlotLab platform from this private workspace.</p></div><span class="pill orange">Integration pending</span></div>
-   <div class="grid section-grid">
-    <div class="card feature-card"><div><div class="bigico">▣</div><h3>Movie catalogue</h3><p>Add and edit movie metadata, posters, backdrops, trailers, genres, cast and release dates.</p></div><button class="btn" data-action="integration">Configure connection →</button></div>
-    <div class="card feature-card"><div><div class="bigico">♙</div><h3>Users & creators</h3><p>Review account and creator records, access states and moderation tools.</p></div><button class="btn" data-action="integration">Configure connection →</button></div>
-    <div class="card feature-card"><div><div class="bigico">☆</div><h3>Reviews & moderation</h3><p>Review ratings, moderate public feedback and maintain community standards.</p></div><button class="btn" data-action="integration">Configure connection →</button></div>
-    <div class="card feature-card"><div><div class="bigico">◉</div><h3>Notifications</h3><p>Prepare announcements and user notifications with an approval workflow.</p></div><button class="btn" data-action="integration">Configure connection →</button></div>
-   </div>
-   <div style="height:15px"></div><div class="card"><div class="card-head"><h3>Connection status</h3><span class="pill red">Not connected</span></div><p class="muted" style="font-size:12px;margin:0">This interface is a safe starting shell. No live PlotLab data is read or modified yet. Before enabling controls, we will configure Firebase Authentication, trusted admin claims and Firestore Security Rules. The main website remains unchanged.</p></div>
-  </section>
-  <section class="page" id="creative">
+ <div class="heading"><div><div class="eyebrow">Platform operations</div><h1>Administration</h1><p>Live PlotLab catalogue connected in read-only mode. Publishing remains in the existing Admin until the next phase.</p></div><span class="pill green" id="catalogueConnection">Connecting…</span></div>
+ <div class="grid stats" style="margin-bottom:16px">
+  <div class="card"><div class="stat-top">Total records</div><div class="stat-value" id="studioMovieTotal">—</div><div class="stat-foot">Live Firestore records</div></div>
+  <div class="card"><div class="stat-top">Published</div><div class="stat-value" id="studioMoviePublished">—</div><div class="stat-foot">Visible on PlotLab</div></div>
+  <div class="card"><div class="stat-top">Featured</div><div class="stat-value" id="studioMovieFeatured">—</div><div class="stat-foot">Featured titles</div></div>
+  <div class="card"><div class="stat-top">Trending</div><div class="stat-value" id="studioMovieTrending">—</div><div class="stat-foot">Trending titles</div></div>
+ </div>
+ <div class="card"><div class="card-head" style="gap:12px;flex-wrap:wrap"><div><h3 style="margin:0">Movie catalogue</h3><span class="muted" style="font-size:10px">Synced from the existing PlotLab database · read only</span></div><button class="btn" id="refreshStudioMovies" type="button">↻ Refresh</button></div>
+  <div class="formgrid" style="margin:12px 0 16px"><div class="field full"><label for="studioMovieSearch">Search titles</label><input id="studioMovieSearch" type="search" placeholder="Search by title, genre or year…"></div></div>
+  <div id="studioMovieStatus" class="muted" style="font-size:12px;padding:8px 0 14px">Waiting for owner authentication…</div>
+  <div id="studioMovieList" class="grid" style="gap:9px"><div class="empty">The live catalogue will appear here after sign-in.</div></div>
+ </div>
+ <div style="height:15px"></div><div class="grid section-grid">
+  <div class="card feature-card"><div><div class="bigico">♙</div><h3>Users & creators</h3><p>Account and creator records will be connected after the catalogue integration is verified.</p></div><span class="pill">Next phase</span></div>
+  <div class="card feature-card"><div><div class="bigico">☆</div><h3>Reviews & moderation</h3><p>Review ratings and moderation tools will be connected with owner-only controls.</p></div><span class="pill">Next phase</span></div>
+  <div class="card feature-card"><div><div class="bigico">◉</div><h3>Notifications</h3><p>Prepare announcements and user notifications with an approval workflow.</p></div><span class="pill">Next phase</span></div>
+  <div class="card feature-card"><div><div class="bigico">▤</div><h3>Movie editing & publishing</h3><p>Editing will be enabled only after the read-only data mapping and audit workflow are verified.</p></div><span class="pill orange">Protected</span></div>
+ </div>
+</section>
+<section class="page" id="creative">
    <div class="heading"><div><div class="eyebrow">Ideas into impact</div><h1>Creative Studio</h1><p>Prepare visual concepts and campaign copy for PlotLab.</p></div><span class="pill orange">Creative workspace</span></div>
    <div class="grid section-grid">
     <div class="card"><div class="bigico" style="font-size:25px;color:var(--orange2)">▧</div><h3>Visual brief builder</h3><p class="muted" style="font-size:11px">Write a creative brief for posters, social posts, banners or promotional artwork.</p><div class="field" style="margin-top:14px"><label>What are we creating?</label><select id="assetType"><option>Instagram post</option><option>Instagram story</option><option>Movie announcement poster</option><option>Website banner</option><option>Festival creative</option><option>Trailer thumbnail</option></select></div><div class="field" style="margin-top:10px"><label>Creative direction</label><textarea id="creativeBrief" placeholder="Describe the campaign, mood, message and visual direction..."></textarea></div><button class="btn primary" style="margin-top:12px" id="saveBrief">Save creative brief</button></div>
@@ -168,6 +178,7 @@ catch(error){console.info("Using cached PlotLab branding until public logo setti
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyDpZnZP7WxtspEIbpODiyeO7k_YugO62WQ",authDomain:"plotlab-22f4b.firebaseapp.com",projectId:"plotlab-22f4b",storageBucket:"plotlab-22f4b.firebasestorage.app",messagingSenderId:"780600065112",appId:"1:780600065112:web:9a8722a1a6afe795a59e2d"};
 const OWNER_EMAIL="plotlab29@gmail.com";
 const statusEl=document.getElementById("loginStatus");
@@ -178,6 +189,46 @@ const fallback=document.querySelector(".brand-fallback");
 const loginFallback=document.getElementById("loginFallback");
 const app=initializeApp(firebaseConfig,"plotlab-studio-auth");
 const auth=getAuth(app);
+const db=getFirestore(app);
+let studioMovies=[];
+const movieStatus=document.getElementById("studioMovieStatus");
+const movieList=document.getElementById("studioMovieList");
+function safeText(value){return String(value??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");}
+function renderStudioMovies(){
+ const term=(document.getElementById("studioMovieSearch").value||"").trim().toLowerCase();
+ const visible=studioMovies.filter(m=>[m.title,m.genre,m.year,m.id].some(v=>String(v||"").toLowerCase().includes(term)));
+ const published=studioMovies.filter(m=>m.published===true);
+ document.getElementById("studioMovieTotal").textContent=studioMovies.length.toLocaleString();
+ document.getElementById("studioMoviePublished").textContent=published.length.toLocaleString();
+ document.getElementById("studioMovieFeatured").textContent=published.filter(m=>m.featured===true).length.toLocaleString();
+ document.getElementById("studioMovieTrending").textContent=published.filter(m=>m.trending===true).length.toLocaleString();
+ if(!visible.length){movieList.innerHTML='<div class="empty">'+(studioMovies.length?"No titles match your search.":"No movie records found in Firestore.")+'</div>';return;}
+ movieList.innerHTML=visible.map(m=>{
+  const tags=[m.featured?"Featured":"",m.trending?"Trending":""].filter(Boolean);
+  const poster=m.posterUrl?'<img src="'+safeText(m.posterUrl)+'" alt="" loading="lazy">':'<div class="activity-icon">▣</div>';
+  return '<article class="catalogue-movie">'+poster+'<div><strong>'+safeText(m.title||"Untitled")+'</strong><small>'+safeText([m.year,m.genre,m.id].filter(Boolean).join(" · "))+'</small><div class="catalogue-tags">'+tags.map(t=>"<span>"+t+"</span>").join("")+'</div></div><span class="pill '+(m.published?"green":"")+'">'+(m.published?"Published":"Draft")+'</span></article>';
+ }).join("");
+}
+async function loadStudioMovies(){
+ movieStatus.textContent="Loading live movie records…";
+ document.getElementById("catalogueConnection").textContent="Syncing…";
+ try{
+  const snap=await getDocs(collection(db,"movies"));
+  studioMovies=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.updatedAt?.seconds||0)-(a.updatedAt?.seconds||0));
+  renderStudioMovies();
+  movieStatus.textContent="Connected · "+studioMovies.length+" records loaded from PlotLab Firestore. This view cannot edit or publish.";
+  document.getElementById("catalogueConnection").textContent="Live connection";
+  document.getElementById("catalogueConnection").className="pill green";
+ }catch(error){
+  console.error("[PlotLab Studio] Movie catalogue read failed:",error);
+  movieStatus.textContent="Could not load catalogue ("+(error.code||error.message||"unknown error")+"). Check the signed-in owner account and current Firestore rules.";
+  document.getElementById("catalogueConnection").textContent="Connection issue";
+  document.getElementById("catalogueConnection").className="pill red";
+  movieList.innerHTML='<div class="empty">The catalogue could not be loaded. Your existing PlotLab data has not been changed.</div>';
+ }
+}
+document.getElementById("refreshStudioMovies").addEventListener("click",loadStudioMovies);
+document.getElementById("studioMovieSearch").addEventListener("input",renderStudioMovies);
 const provider=new GoogleAuthProvider();
 provider.setCustomParameters({prompt:"select_account"});
 function showStatus(message){statusEl.textContent=message;}
@@ -198,6 +249,7 @@ onAuthStateChanged(auth,async user=>{
   document.getElementById("studioUserEmail").textContent=user.email||OWNER_EMAIL;
   document.body.classList.add("authenticated");
   showStatus("");
+  await loadStudioMovies();
  }catch(error){showStatus("Could not verify this account. Please sign in again.");await signOut(auth);}
 });
 </script>
