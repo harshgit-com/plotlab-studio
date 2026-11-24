@@ -34,7 +34,7 @@ $("saveStudioTrending")?.addEventListener("click",async()=>{if(!owner)return;con
 $("refreshStudioTrending")?.addEventListener("click",async()=>{try{await loadSettingsAndMovies();note("studioTrendingStatus","Latest catalogue and saved order loaded.")}catch(e){note("studioTrendingStatus","Refresh failed: "+(e.code||e.message))}});
 const fmtNum=n=>Number(n||0).toLocaleString();
 const fmtDuration=seconds=>{const n=Math.max(0,Math.round(seconds||0));if(n<60)return n+"s";const m=Math.floor(n/60),h=Math.floor(m/60);return h?h+"h "+(m%60)+"m":m+"m"};
-let analyticsEventsCache=[],analyticsUsersCache=[],analyticsUsersUnsubscribe=null,analyticsPage=0,analyticsFilterTimer=null;
+let analyticsUnsubscribe=null,analyticsEventsCache=[],analyticsUsersCache=[],analyticsUsersUnsubscribe=null,analyticsPage=0,analyticsFilterTimer=null;
 const anPalette=["#ff8068","#F5B942","#55B6E8","#A3D977","#FF8A50","#E78AC3","#FF6B6B","#B7C7D8"];
 const anEsc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function anCategory(name){
@@ -194,4 +194,4 @@ $("anMovieFilter").addEventListener("input",()=>{clearTimeout(analyticsFilterTim
 $("anPrev").addEventListener("click",()=>{analyticsPage=Math.max(0,analyticsPage-1);renderAnalyticsTable(anFiltered())});
 $("anNext").addEventListener("click",()=>{analyticsPage++;renderAnalyticsTable(anFiltered())});
 
-onAuthStateChanged(auth,async u=>{if(!u||u.email!==OWNER){owner=null;currentUser=null;if(unsubscribe)unsubscribe();return}owner=u;currentUser=u;try{await loadSettingsAndMovies();await loadAnalytics()}catch(e){note("studioTrendingStatus","Could not load settings: "+(e.code||e.message))}});
+onAuthStateChanged(auth,async u=>{if(!u||u.email!==OWNER){owner=null;currentUser=null;if(unsubscribe)unsubscribe();if(analyticsUnsubscribe)analyticsUnsubscribe();if(analyticsUsersUnsubscribe)analyticsUsersUnsubscribe();return}owner=u;currentUser=u;try{await loadSettingsAndMovies();await loadAnalytics()}catch(e){note("studioTrendingStatus","Could not load settings: "+(e.code||e.message))}});
