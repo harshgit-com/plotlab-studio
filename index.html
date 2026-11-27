@@ -377,8 +377,7 @@ async function loadStudioMovies(){
   movieList.innerHTML='<div class="empty">The catalogue could not be loaded. Your existing PlotLab data has not been changed.</div>';
  }
 }
-document.getElementById("refreshStudioMovies").addEventListener("click",loadStudioMovies);
-document.getElementById("studioMovieSearch").addEventListener("input",renderStudioMovies);
+// The dedicated studio-movies.js module owns catalogue loading and controls.
 const provider=new GoogleAuthProvider();
 provider.setCustomParameters({prompt:"select_account"});
 function showStatus(message){statusEl.textContent=message;}
@@ -399,7 +398,8 @@ onAuthStateChanged(auth,async user=>{
   document.getElementById("studioUserEmail").textContent=user.email||OWNER_EMAIL;
   document.body.classList.add("authenticated");
   showStatus("");
-  // Movie catalogue is loaded by the Studio administration module.
+  // Notify the dedicated catalogue module only after the owner account is verified.
+  window.dispatchEvent(new CustomEvent("plotlab-owner-authenticated",{detail:{email:user.email}}));
  }catch(error){showStatus("Could not verify this account. Please sign in again.");await signOut(auth);}
 });
 </script>
