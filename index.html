@@ -399,7 +399,7 @@ onAuthStateChanged(auth,async user=>{
   document.body.classList.add("authenticated");
   showStatus("");
   // Notify the dedicated catalogue module only after the owner account is verified.
-  window.dispatchEvent(new CustomEvent("plotlab-owner-authenticated",{detail:{email:user.email}}));
+  window.plotlabOwnerVerifiedEmail=user.email; window.dispatchEvent(new CustomEvent("plotlab-owner-authenticated",{detail:{email:user.email}}));
  }catch(error){showStatus("Could not verify this account. Please sign in again.");await signOut(auth);}
 });
 </script>
