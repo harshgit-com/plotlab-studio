@@ -103,7 +103,7 @@ body.authenticated .login-gate{display:none}
  <div class="card" style="margin-bottom:16px;border-color:#713326">
   <div class="card-head" style="margin-bottom:8px"><div><h3 style="margin:0">Public movie visibility</h3><span class="muted" style="font-size:10px">Owner-only · catalogue-wide control</span></div><span class="pill orange" id="catalogueVisibilityBadge">Checking…</span></div>
   <label style="display:flex;align-items:center;gap:11px;cursor:pointer;font-weight:650;font-size:13px"><input id="catalogueVisibilityToggle" type="checkbox" style="width:18px;height:18px;accent-color:#ff5738"> Hide all movies on the public PlotLab website</label>
-  <p class="muted" style="font-size:11px;margin:9px 0 0">Hides published movie titles and catalogue sections from public visitors. Movie records remain saved in Firestore and can be restored at any time.</p>
+  <p class="muted" style="font-size:11px;margin:9px 0 0">Hides all public movie sections, including the Trending poster. Movie records remain saved in Firestore and can be restored at any time. Use each movie's Hide/Show control below to manage titles individually.</p>
   <div id="catalogueVisibilityStatus" class="muted" role="status" aria-live="polite" style="font-size:11px;margin-top:10px">Checking the current public setting…</div>
  </div>
  <div class="card"><div class="card-head" style="gap:12px;flex-wrap:wrap"><div><h3 style="margin:0">Movie catalogue</h3><span class="muted" style="font-size:10px">Live database · owner-only editing</span></div><button class="btn primary" id="newStudioMovie" type="button">＋ Add movie</button><button class="btn" id="refreshStudioMovies" type="button">↻ Refresh</button></div>
