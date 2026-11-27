@@ -42,10 +42,9 @@ $("copyVisualPrompt")?.addEventListener("click",async()=>{try{await navigator.cl
 // only the resulting secure URL is written to the shared public siteSettings document.
 function installLogoManager(){
  const brandPage=$("brand");if(!brandPage||$("logoManager"))return;
- const card=brandPage.querySelector(".grid.section-grid .card:nth-child(2)");if(!card)return;
- const panel=document.createElement("div");panel.id="logoManager";panel.style.cssText="margin-top:16px;padding-top:15px;border-top:1px solid var(--line)";
+ const panel=document.createElement("div");panel.id="logoManager";panel.className="card";panel.style.cssText="margin-top:15px";
  panel.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><b style="font-size:12px">Logo Manager</b><p class="muted" style="font-size:10px;margin:3px 0 0">Change the logo used across the PlotLab website and Studio.</p></div><span class="pill green">Owner only</span></div><div style="display:grid;gap:10px;margin-top:12px"><input id="brandLogoFile" type="file" accept="image/png,image/jpeg,image/webp" style="width:100%;background:#101114;border:1px solid var(--line);border-radius:8px;padding:10px;color:#ddd;font-size:11px"><div id="brandLogoCandidateWrap" style="display:none;background:#090909;border:1px solid var(--line);border-radius:9px;padding:12px;text-align:center"><img id="brandLogoCandidate" alt="New PlotLab logo preview" style="max-width:100%;max-height:120px;object-fit:contain"></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="saveBrandLogo" type="button" disabled>Upload & apply logo</button><button class="btn" id="cancelBrandLogo" type="button" disabled>Cancel selection</button></div><p id="brandLogoStatus" class="muted" role="status" aria-live="polite" style="font-size:10px;margin:0">PNG, JPG or WebP · Maximum 5 MB. Your current logo stays active until the new one is saved.</p></div>';
- card.appendChild(panel);
+ brandPage.appendChild(panel);
  const fileInput=$("brandLogoFile"),previewWrap=$("brandLogoCandidateWrap"),candidate=$("brandLogoCandidate"),save=$("saveBrandLogo"),cancel=$("cancelBrandLogo"),message=$("brandLogoStatus");
  let selected=null,previewUrl="";
  const setMessage=s=>{message.textContent=s};
